@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".WeatherGet">
+        <activity android:name=".GetWeather">
 
         </activity>
         <!--

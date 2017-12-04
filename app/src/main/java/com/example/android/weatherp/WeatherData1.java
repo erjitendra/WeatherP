@@ -3,22 +3,25 @@ package com.example.android.weatherp;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-/**
- * Created by Jindal on 11/24/2017.
- */
 
-public class Currently implements Serializable {
+
+public class WeatherData1 implements Serializable {
+
     @SerializedName("time")
     private Long Time;
     @SerializedName("summary")
     private String Summary;
     @SerializedName("icon")
     private String Icon;
+
     @SerializedName("temperature")
     private Double Temperature;
-    @SerializedName("precipIntensity")
+    @SerializedName("humidity")
     private Double Visibility;
+    @SerializedName("data")
+    private ArrayList<WeatherData2> Data;
 
     public Double getTemperature() {
         return Temperature;
@@ -61,4 +64,11 @@ public class Currently implements Serializable {
     }
 
 
+    public ArrayList<WeatherData2> getData() {
+        return Data;
+    }
+
+    public void setData(ArrayList<WeatherData2> data) {
+        Data = data;
+    }
 }

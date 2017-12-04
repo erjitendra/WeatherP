@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.example.android.weatherp.WeatherGet">
+    tools:context="com.example.android.weatherp.GetWeather">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/desiredAddress"
+        />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,10 +26,33 @@
         android:id="@+id/etLongitude"
         android:hint="Longitude"
         />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/etTimeStamp"
+        android:hint="TimeStamp"
+        />
+    <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/buttonhit"
+    android:text="Get Weather"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonhit"
-        android:text="Get Weather"/>
+        android:id="@+id/setdate"
+        android:onClick="setDate"
+        android:text="Change Date"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/desiredDate"
+        android:hint="02/12/2017"
+        />
+
+
 
 </LinearLayout>

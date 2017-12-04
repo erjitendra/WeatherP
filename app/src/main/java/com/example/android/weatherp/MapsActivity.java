@@ -47,6 +47,7 @@ package com.example.android.weatherp;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -59,6 +60,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -89,6 +93,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationRequest locationRequest;
     private Location lastLocation;
     private Marker currentLocationMarker;
+    LatLng desiredLatLng;
+    Address desiredAddress;
+    String addressResult;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         lastLocation = location;
         if (currentLocationMarker != null) {
             currentLocationMarker.remove();
@@ -166,11 +174,81 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (client != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(client, this);
         }
+
+        Button searchButton=findViewById(R.id.searchPlaceMap);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText desiredPlace =  findViewById(R.id.desiredPlace);
+                String desiredLocation = desiredPlace.getText().toString();
+                List<Address> addressList;
+                Log.v("jeet",""+desiredLatLng);
+
+                if(!desiredPlace.equals(""))
+                {
+                    mMap.clear();
+                    Geocoder geocoder = new Geocoder(getApplicationContext());
+                    try {
+                        addressList = geocoder.getFromLocationName(desiredLocation, 5);
+                        if(addressList != null)
+                        {
+                            for(int i = 0;i<addressList.size();i++)
+                            {
+                               desiredLatLng = new LatLng(addressList.get(i).getLatitude() , addressList.get(i).getLongitude());
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(desiredLatLng);
+                                markerOptions.title(desiredLocation);
+                                mMap.addMarker(markerOptions);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(desiredLatLng));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+                                StringBuilder sb = new StringBuilder();
+                                desiredAddress = addressList.get(i);
+                                for (int j = 0; j < desiredAddress.getMaxAddressLineIndex(); i++) {
+                                    sb.append(desiredAddress.getAddressLine(i)).append("\n");
+                                }
+                                sb.append(desiredAddress.getPostalCode()).append("\n");
+                                sb.append(desiredAddress.getCountryName());
+                                sb.append(desiredAddress.getAdminArea()).append("\n"); //state
+
+                                sb.append(desiredAddress.getSubAdminArea()).append("\n");//district
+
+
+                                 addressResult = sb.toString();
+
+
+
+
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        });
+
+        Button getWeather=findViewById(R.id.getWeather);
+        getWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GetWeather.class);
+                Bundle b=new Bundle();
+                b.putString("latitude",String.valueOf(desiredAddress.getLatitude()));
+                b.putString("longitude",String.valueOf(desiredAddress.getLongitude()));
+                b.putString("address",addressResult);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
+
+
         Geocoder geocoder = new Geocoder(this);
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses != null && addresses.size() > 0) {
                 Address address = addresses.get(0);
+
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                     sb.append(address.getAddressLine(i)).append("\n");
@@ -186,6 +264,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 String result = sb.toString();
                 Log.v("Jaipur", "Address " + result);
+                Log.v("Hi", "Address " + location.getLatitude());
+
 //
                 Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 
@@ -208,6 +288,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
+
+
 
 
     @Override
