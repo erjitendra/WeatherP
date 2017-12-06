@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CalculateDailyData {
 
-    public Integer maxTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+    public Double maxTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
         double max = arrayData.get(0).getTempreture();
         for (int counter = 1; counter < arrayData.size(); counter++)
 
@@ -17,11 +17,11 @@ public class CalculateDailyData {
                 max = arrayData.get(counter).getTempreture();
             }
         }
-        return (int) max;
+        return max;
     }
 
 
-    public Integer minTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+    public Double minTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
         double min = arrayData.get(0).getTempreture();
         for (int counter = 1; counter < arrayData.size(); counter++)
 
@@ -30,7 +30,7 @@ public class CalculateDailyData {
                 min = arrayData.get(counter).getTempreture();
             }
         }
-        return (int) min;
+        return min;
     }
 
 

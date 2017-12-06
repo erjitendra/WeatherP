@@ -70,7 +70,7 @@ public class WeatherActivity extends AppCompatActivity {
                 time = findViewById(R.id.currentTime);
                 summary = findViewById(R.id.Summary);
 
-                tempreature = findViewById(R.id.Tempreature);
+
                 humidity = findViewById(R.id.Humidity);
                 avgTempreature = findViewById(R.id.AvgTempreature);
                 sunriseTime = findViewById(R.id.SunriseTime);
@@ -92,8 +92,8 @@ public class WeatherActivity extends AppCompatActivity {
 
 
                 Integer tempmeanInt = calculateDailyData.meanTemp(products.getHourly().getData());
-                Integer tempMax = calculateDailyData.maxTemp(products.getHourly().getData());
-                Integer tempMin = calculateDailyData.minTemp(products.getHourly().getData());
+                Double tempMax = calculateDailyData.maxTemp(products.getHourly().getData());
+                Double tempMin = calculateDailyData.minTemp(products.getHourly().getData());
 //                Log.v("Done",""+tempMax+"/"+tempMin+"/"+tempmeanInt);
 //                Log.v("Done","Summary"+products.getCurrently().getSummary());
 //                Log.v("Done","Temp"+Double.toString(products.getCurrently().getTemperature()));
@@ -102,13 +102,13 @@ public class WeatherActivity extends AppCompatActivity {
 //                Log.v("Done","Sunrise Ts"+products.getDaily().getData().get(0).getSunriseTime() * 1000);
 
 
-                summary.setText(products.getCurrently().getSummary());
-                tempreature.setText(Double.toString(products.getCurrently().getTemperature()));
+                summary.setText(products.getDaily().getData().get(0).getSummary());
+
                 // Log.v("Done","Humidity"+Double.toString(products.getCurrently().getHumidity()));
-                humidity.setText(Double.toString(products.getCurrently().getHumidity()));
+                humidity.setText(Double.toString(products.getDaily().getData().get(0).getHumidity() * 100));
                 avgTempreature.setText(Integer.toString(tempmeanInt));
-                maxTempreature.setText(Integer.toString(tempMax));
-                minTempreature.setText(Integer.toString(tempMin));
+                maxTempreature.setText(Double.toString(tempMax));
+                minTempreature.setText(Double.toString(tempMin));
                 address.setText(DynamicAddress);
                 //...........................................
                 SunriseTimeStamp = new Date(products.getDaily().getData().get(0).getSunriseTime() * 1000);

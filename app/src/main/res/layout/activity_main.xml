@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:padding="10dp"
             android:textColor="#3F51B5"
             android:textSize="20sp" />
@@ -28,152 +28,209 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:padding="10dp"
             android:textColor="#03A9F4"
             android:textSize="20sp" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
-        android:orientation="horizontal">
-
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/SunriseTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                />
-
-            <TextView
-                android:id="@+id/SunsetTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                />
-
-            <TextView
-                android:id="@+id/Summary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                />
-
-            <TextView
-                android:id="@+id/Tempreature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                />
-
-            <TextView
-                android:id="@+id/AvgTempreature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                />
-
-            <TextView
-                android:id="@+id/MaxTempreature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                />
-
-            <TextView
-                android:id="@+id/MinTempreature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                />
-
-            <TextView
-                android:id="@+id/Humidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
             <Button
                 android:id="@+id/SunriseTime1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SunRise Time" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="SunRise Time"
+                android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/SunriseTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
             <Button
                 android:id="@+id/SunsetTime1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="SunSet Time"
+                android:textColor="#FFFFFF" />
 
-                android:layout_height="wrap_content"
-                android:text="SunSet Time" />
+            <TextView
+                android:id="@+id/SunsetTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
             <Button
                 android:id="@+id/Summary1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="Summary"
+                android:textColor="#FFFFFF" />
 
-                android:layout_height="wrap_content"
-                android:text="Summary" />
+            <TextView
+                android:id="@+id/Summary"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
 
-            <Button
-                android:id="@+id/Tempreature1"
-                android:layout_width="wrap_content"
 
-                android:layout_height="wrap_content"
-                android:text="Tempreature" />
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
 
             <Button
                 android:id="@+id/AvgTempreature1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="Avg Tempreature"
+                android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/AvgTempreature"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
 
-                android:layout_height="wrap_content"
-                android:text="Avg Tempreature" />
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
             <Button
                 android:id="@+id/MaxTempreature1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="Max Tempreature"
+                android:textColor="#FFFFFF" />
 
-                android:layout_height="wrap_content"
-                android:text="Max Tempreature" />
+            <TextView
+                android:id="@+id/MaxTempreature"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
+
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
 
             <Button
                 android:id="@+id/MinTempreature1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="Min Tempreature"
+                android:textColor="#FFFFFF" />
 
-                android:layout_height="wrap_content"
-                android:text="Min Tempreature" />
+            <TextView
+                android:id="@+id/MinTempreature"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
+
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
             <Button
                 android:id="@+id/Humidity1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/bg_red"
+                android:text="Humidity"
+                android:textColor="#FFFFFF" />
 
-                android:layout_height="wrap_content"
-                android:text="Humidity" />
+            <TextView
+                android:id="@+id/Humidity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:textSize="20sp"
 
+
+                />
         </LinearLayout>
+
 
 
     </LinearLayout>

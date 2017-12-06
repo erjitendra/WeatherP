@@ -13,6 +13,10 @@ public class WeatherDataArrayKeys {
     private long SunsetTime;
     @SerializedName("temperature")
     private double Tempreture;
+    @SerializedName("summary")
+    private String Summary;
+    @SerializedName("humidity")
+    private Double Humidity;
 
     public long getSunriseTime() {
         return SunriseTime;
@@ -36,5 +40,21 @@ public class WeatherDataArrayKeys {
 
     public void setTempreture(double tempreture) {
         Tempreture = tempreture;
+    }
+
+    public String getSummary() {
+        return Summary;
+    }
+
+    public void setSummary(String summary) {
+        Summary = summary;
+    }
+
+    public Double getHumidity() {
+        return Humidity;
+    }
+
+    public void setHumidity(Double humidity) {
+        Humidity = humidity;
     }
 }

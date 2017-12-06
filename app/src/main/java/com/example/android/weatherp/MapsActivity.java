@@ -268,7 +268,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
                         addressList = geocoder.getFromLocationName(desiredLocation, 1);
-                        if(addressList != null)
+                        Log.v("WrongAdd", "" + addressList);
+
+
+                        if (addressList.size() > 0)
                         {
 
                             desiredLatLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
@@ -298,10 +301,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+                        } else {
+                            Toast.makeText(getBaseContext(), "Enter Right Address", Toast.LENGTH_SHORT).show();
+                            desiredPlace.setText("");
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
+
                     }
+
                 }
             }
 
