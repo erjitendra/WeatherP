@@ -10,33 +10,33 @@ import java.io.Serializable;
 
 public class WeatherModel implements Serializable {
     @SerializedName("daily")
-    private WeatherData1 Daily;
+    private WeatherData Daily;
     @SerializedName("hourly")
-    private WeatherData1 Hourly;
+    private WeatherData Hourly;
     @SerializedName("currently")
-    private WeatherData1 currently;
+    private WeatherData currently;
 
-    public WeatherData1 getDaily() {
+    public WeatherData getDaily() {
         return Daily;
     }
 
-    public void setDaily(WeatherData1 daily) {
+    public void setDaily(WeatherData daily) {
         Daily = daily;
     }
 
-    public WeatherData1 getHourly() {
+    public WeatherData getHourly() {
         return Hourly;
     }
 
-    public void setHourly(WeatherData1 hourly) {
+    public void setHourly(WeatherData hourly) {
         Hourly = hourly;
     }
 
-    public WeatherData1 getCurrently() {
+    public WeatherData getCurrently() {
         return currently;
     }
 
-    public void setCurrently1(WeatherData1 currently) {
+    public void setCurrently1(WeatherData currently) {
         this.currently = currently;
     }
 

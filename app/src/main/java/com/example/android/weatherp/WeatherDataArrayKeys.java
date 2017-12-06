@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Jindal on 11/29/2017.
  */
 
-public class WeatherData2 {
+public class WeatherDataArrayKeys {
     @SerializedName("sunriseTime")
     private long SunriseTime;
     @SerializedName("sunsetTime")

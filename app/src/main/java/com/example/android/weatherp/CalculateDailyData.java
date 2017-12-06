@@ -8,18 +8,37 @@ import java.util.ArrayList;
 
 public class CalculateDailyData {
 
+    public Integer maxTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+        double max = arrayData.get(0).getTempreture();
+        for (int counter = 1; counter < arrayData.size(); counter++)
+
+        {
+            if (arrayData.get(counter).getTempreture() > max) {
+                max = arrayData.get(counter).getTempreture();
+            }
+        }
+        return (int) max;
+    }
 
 
+    public Integer minTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+        double min = arrayData.get(0).getTempreture();
+        for (int counter = 1; counter < arrayData.size(); counter++)
+
+        {
+            if (arrayData.get(counter).getTempreture() < min) {
+                min = arrayData.get(counter).getTempreture();
+            }
+        }
+        return (int) min;
+    }
 
 
-
-    public Integer meanTemp(ArrayList<WeatherData2> arrayData)
-    {
+    public Integer meanTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
         Double TampretureAtPosition = 0.0;
         for (int i = 0; i < arrayData.size(); i++) {
 
-            TampretureAtPosition+=arrayData.get(i).getTempreture();
-
+            TampretureAtPosition += arrayData.get(i).getTempreture();
         }
         Double TempreatureMean = TampretureAtPosition / (arrayData.size() - 1);
         Double d = TempreatureMean;

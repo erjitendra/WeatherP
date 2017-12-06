@@ -1,43 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/currentTime"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Summary"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Tempreature"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/AvgTempreature"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Visibility"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SunriseTime"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SunsetTime"
-        android:textSize="20sp"/>
+
+
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:textColor="#3F51B5"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:textColor="#03A9F4"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/SunriseTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+
+            <TextView
+                android:id="@+id/SunsetTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                />
+
+            <TextView
+                android:id="@+id/Summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                />
+
+            <TextView
+                android:id="@+id/Tempreature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                />
+
+            <TextView
+                android:id="@+id/AvgTempreature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                />
+
+            <TextView
+                android:id="@+id/MaxTempreature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                />
+
+            <TextView
+                android:id="@+id/MinTempreature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                />
+
+            <TextView
+                android:id="@+id/Humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/SunriseTime1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SunRise Time" />
+
+            <Button
+                android:id="@+id/SunsetTime1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="SunSet Time" />
+
+            <Button
+                android:id="@+id/Summary1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Summary" />
+
+            <Button
+                android:id="@+id/Tempreature1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Tempreature" />
+
+            <Button
+                android:id="@+id/AvgTempreature1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Avg Tempreature" />
+
+            <Button
+                android:id="@+id/MaxTempreature1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Max Tempreature" />
+
+            <Button
+                android:id="@+id/MinTempreature1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Min Tempreature" />
+
+            <Button
+                android:id="@+id/Humidity1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:text="Humidity" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

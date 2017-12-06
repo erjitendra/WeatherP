@@ -6,8 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-
-public class WeatherData1 implements Serializable {
+public class WeatherData implements Serializable {
 
     @SerializedName("time")
     private Long Time;
@@ -19,9 +18,9 @@ public class WeatherData1 implements Serializable {
     @SerializedName("temperature")
     private Double Temperature;
     @SerializedName("humidity")
-    private Double Visibility;
+    private Double Humidity;
     @SerializedName("data")
-    private ArrayList<WeatherData2> Data;
+    private ArrayList<WeatherDataArrayKeys> Data;
 
     public Double getTemperature() {
         return Temperature;
@@ -31,12 +30,12 @@ public class WeatherData1 implements Serializable {
         Temperature = temperature;
     }
 
-    public Double getVisibility() {
-        return Visibility;
+    public Double getHumidity() {
+        return Humidity;
     }
 
-    public void setVisibility(Double visibility) {
-        Visibility = visibility;
+    public void setHumidity(Double humidity) {
+        Humidity = humidity;
     }
 
     public Long getTime() {
@@ -64,11 +63,11 @@ public class WeatherData1 implements Serializable {
     }
 
 
-    public ArrayList<WeatherData2> getData() {
+    public ArrayList<WeatherDataArrayKeys> getData() {
         return Data;
     }
 
-    public void setData(ArrayList<WeatherData2> data) {
+    public void setData(ArrayList<WeatherDataArrayKeys> data) {
         Data = data;
     }
 }

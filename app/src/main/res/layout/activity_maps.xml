@@ -1,21 +1,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.weatherp.MapsActivity"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    tools:context="com.example.android.weatherp.MapsActivity">
+
     <LinearLayout
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        >
-        <EditText
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:id="@+id/desiredPlace"/>
+            android:background="@drawable/bg_red"
+            android:gravity="center"
+            android:text="3/12/17"
+            android:textColor="#FFFFFF"
+
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btChangeDate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:onClick="setDate"
+            android:text="Change" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+
+
+        >
+        <EditText
+            android:id="@+id/desiredPlace"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:paddingLeft="10dp"
+            android:textColor="#9C27B0"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/searchPlaceMap"
@@ -37,13 +74,17 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:padding="5dp"
 
         >
         <Button
             android:id="@+id/getWeather"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_red"
             android:text="Get Weather"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
              />
     </LinearLayout>
 </LinearLayout>

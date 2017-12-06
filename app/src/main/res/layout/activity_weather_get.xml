@@ -4,53 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="com.example.android.weatherp.GetWeather">
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/desiredAddress"
-        />
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        />
+    <EditText
         android:id="@+id/etLatitude"
-
-        android:hint="Latitude"/>
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:hint="Latitude"
+
+        android:textSize="20sp" />
+    <EditText
         android:id="@+id/etLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:hint="Longitude"
+        android:textSize="20sp"
         />
     <EditText
+        android:id="@+id/etTimeStamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:id="@+id/etTimeStamp"
         android:hint="TimeStamp"
+        android:textSize="20sp"
         />
     <Button
+        android:id="@+id/buttonhit"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/buttonhit"
     android:text="Get Weather"/>
 
     <Button
+        android:id="@+id/setdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/setdate"
-        android:onClick="setDate"
+
         android:text="Change Date"/>
     <TextView
+        android:id="@+id/desiredDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:id="@+id/desiredDate"
         android:hint="02/12/2017"
+        android:textSize="20sp"
         />
 
 

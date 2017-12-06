@@ -1,52 +1,8 @@
 package com.example.android.weatherp;
 
-//import android.support.v4.app.FragmentActivity;
-//import android.os.Bundle;
-//
-//import com.google.android.gms.maps.CameraUpdateFactory;
-//import com.google.android.gms.maps.GoogleMap;
-//import com.google.android.gms.maps.OnMapReadyCallback;
-//import com.google.android.gms.maps.SupportMapFragment;
-//import com.google.android.gms.maps.model.LatLng;
-//import com.google.android.gms.maps.model.MarkerOptions;
-//
-//public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-//
-//    private GoogleMap mMap;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_maps);
-//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-//    }
-//
-//
-//    /**
-//     * Manipulates the map once available.
-//     * This callback is triggered when the map is ready to be used.
-//     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-//     * we just add a marker near Sydney, Australia.
-//     * If Google Play services is not installed on the device, the user will be prompted to install
-//     * it inside the SupportMapFragment. This method will only be triggered once the user has
-//     * installed Google Play services and returned to the app.
-//     */
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//    }
-//}
-
-
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -62,7 +18,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -80,6 +38,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -88,20 +51,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener {
 
     public static final int Request_Location_code = 99;
+    LatLng desiredLatLng;
+    Address desiredAddress;
+    String addressResult;
+    Date date;
+    EditText desiredPlace;
     private GoogleMap mMap;
     private GoogleApiClient client;
     private LocationRequest locationRequest;
     private Location lastLocation;
     private Marker currentLocationMarker;
-    LatLng desiredLatLng;
-    Address desiredAddress;
-    String addressResult;
-
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private TextView dateView;
+    private int year, month, day;
+    private DatePickerDialog.OnDateSetListener myDateListener = new
+            DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker arg0,
+                                      int arg1, int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                    // arg1 = year
+                    // arg2 = month
+                    // arg3 = day
+                    showDate(arg1, arg2 + 1, arg3);
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        desiredPlace = findViewById(R.id.desiredPlace);
+
+        dateView = (TextView) findViewById(R.id.tvDate);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, month + 1, day);
+
+
+
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CheckLocationPermission();
@@ -113,6 +108,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
+    @SuppressWarnings("deprecation")
+    public void setDate(View view) {
+        showDialog(999);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == 999) {
+            return new DatePickerDialog(this,
+                    myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private void showDate(int year, int month, int day) {
+        dateView.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
+
+        setTimestamp(year, month, day);
+
+
+    }
+
+    private void setTimestamp(int year, int month, int day) {
+        String str_date = String.valueOf(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
+        Log.v("Date17", "" + str_date);
+        DateFormat formatter;
+
+        formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+
+        try {
+            date = (Date) formatter.parse(str_date);
+            Log.v("Date13", "" + date.getTime());
+
+            //timestamp.setText(String.valueOf(date.getTime() / 1000));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -175,11 +217,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationServices.FusedLocationApi.removeLocationUpdates(client, this);
         }
 
+        Geocoder geocoder = new Geocoder(this);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses != null && addresses.size() > 0) {
+                desiredAddress = addresses.get(0);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < desiredAddress.getMaxAddressLineIndex(); i++) {
+                    sb.append(desiredAddress.getAddressLine(i)).append("\n");
+                }
+                sb.append(desiredAddress.getLocality()).append("\n");//village
+                sb.append(desiredAddress.getAdminArea()).append("\n"); //state
+                //sb.append(address.getPostalCode()).append("\n");
+                sb.append(desiredAddress.getCountryName());
+
+
+                //sb.append(address.getSubAdminArea()).append("\n");//district
+
+
+                addressResult = sb.toString();
+                Log.v("address", "Address " + addressResult);
+                Log.v("latitude", "Address " + location.getLatitude());
+
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
         Button searchButton=findViewById(R.id.searchPlaceMap);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText desiredPlace =  findViewById(R.id.desiredPlace);
+
                 String desiredLocation = desiredPlace.getText().toString();
                 List<Address> addressList;
                 Log.v("jeet",""+desiredLatLng);
@@ -189,12 +267,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.clear();
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
-                        addressList = geocoder.getFromLocationName(desiredLocation, 5);
+                        addressList = geocoder.getFromLocationName(desiredLocation, 1);
                         if(addressList != null)
                         {
-                            for(int i = 0;i<addressList.size();i++)
-                            {
-                               desiredLatLng = new LatLng(addressList.get(i).getLatitude() , addressList.get(i).getLongitude());
+
+                            desiredLatLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
                                 MarkerOptions markerOptions = new MarkerOptions();
                                 markerOptions.position(desiredLatLng);
                                 markerOptions.title(desiredLocation);
@@ -202,15 +279,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(desiredLatLng));
                                 mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
                                 StringBuilder sb = new StringBuilder();
-                                desiredAddress = addressList.get(i);
-                                for (int j = 0; j < desiredAddress.getMaxAddressLineIndex(); i++) {
-                                    sb.append(desiredAddress.getAddressLine(i)).append("\n");
+                            desiredAddress = addressList.get(0);
+                            for (int j = 0; j < desiredAddress.getMaxAddressLineIndex(); j++) {
+                                sb.append(desiredAddress.getAddressLine(j)).append("\n");
                                 }
-                                sb.append(desiredAddress.getPostalCode()).append("\n");
-                                sb.append(desiredAddress.getCountryName());
-                                sb.append(desiredAddress.getAdminArea()).append("\n"); //state
+                            sb.append(desiredAddress.getLocality()).append("\n");//village
+                            sb.append(desiredAddress.getAdminArea()).append("\n"); //state
 
-                                sb.append(desiredAddress.getSubAdminArea()).append("\n");//district
+                            // sb.append(desiredAddress.getPostalCode()).append("\n");
+                            sb.append(desiredAddress.getCountryName());
+
+                            // sb.append(desiredAddress.getSubAdminArea()).append("\n");//district
 
 
                                  addressResult = sb.toString();
@@ -218,7 +297,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-                            }
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -232,60 +311,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GetWeather.class);
+                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
                 Bundle b=new Bundle();
                 b.putString("latitude",String.valueOf(desiredAddress.getLatitude()));
                 b.putString("longitude",String.valueOf(desiredAddress.getLongitude()));
                 b.putString("address",addressResult);
+                b.putString("timestamp", String.valueOf(date.getTime() / 1000));
                 intent.putExtras(b);
                 startActivity(intent);
             }
         });
 
 
-        Geocoder geocoder = new Geocoder(this);
-        try {
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (addresses != null && addresses.size() > 0) {
-                Address address = addresses.get(0);
-
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                    sb.append(address.getAddressLine(i)).append("\n");
-                }
-                sb.append(address.getLocality()).append("\n");//village
-
-                sb.append(address.getPostalCode()).append("\n");
-                sb.append(address.getCountryName());
-                sb.append(address.getAdminArea()).append("\n"); //state
-
-                sb.append(address.getSubAdminArea()).append("\n");//district
-
-
-                String result = sb.toString();
-                Log.v("Jaipur", "Address " + result);
-                Log.v("Hi", "Address " + location.getLatitude());
-
-//
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-
-            }
-
-//            String locality=add.getMaxAddressLineIndex();
-//
-//            String completeAddress="";
-//
-//            for(int j=0; j<addresses.size(); j++) {
-//                completeAddress+=addresses.get(j)+"-";
-//            }
-//
-//            Log.v("Jaipur", "Address "+ completeAddress);
-//
-//            Toast.makeText(this,completeAddress,Toast.LENGTH_LONG).show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 

@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -121,7 +120,7 @@ public class GetWeather extends AppCompatActivity {
     }
 
     private void fetchAndPopulateWeather(EditText latitude, EditText longitude) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
         Bundle b = new Bundle();
         b.putString("latitude", latitude.getText().toString());
         b.putString("longitude", longitude.getText().toString());
