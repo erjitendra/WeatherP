@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.weatherp.Weather.WeatherMainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -320,7 +321,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                Intent intent = new Intent(getApplicationContext(), WeatherMainActivity.class);
                 Bundle b=new Bundle();
                 b.putString("latitude",String.valueOf(desiredAddress.getLatitude()));
                 b.putString("longitude",String.valueOf(desiredAddress.getLongitude()));

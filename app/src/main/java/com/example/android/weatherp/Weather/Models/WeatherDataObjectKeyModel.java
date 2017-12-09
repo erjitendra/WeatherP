@@ -1,4 +1,4 @@
-package com.example.android.weatherp;
+package com.example.android.weatherp.Weather.Models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class WeatherData implements Serializable {
+public class WeatherDataObjectKeyModel implements Serializable {
 
     @SerializedName("time")
     private Long Time;
@@ -16,7 +16,7 @@ public class WeatherData implements Serializable {
 
 
     @SerializedName("data")
-    private ArrayList<WeatherDataArrayKeys> Data;
+    private ArrayList<WeatherDataArrayKeysModel> Data;
 
 
 
@@ -41,11 +41,11 @@ public class WeatherData implements Serializable {
     }
 
 
-    public ArrayList<WeatherDataArrayKeys> getData() {
+    public ArrayList<WeatherDataArrayKeysModel> getData() {
         return Data;
     }
 
-    public void setData(ArrayList<WeatherDataArrayKeys> data) {
+    public void setData(ArrayList<WeatherDataArrayKeysModel> data) {
         Data = data;
     }
 }

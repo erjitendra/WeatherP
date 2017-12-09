@@ -1,5 +1,7 @@
 package com.example.android.weatherp;
 
+import com.example.android.weatherp.Weather.Models.WeatherDataArrayKeysModel;
+
 import java.util.ArrayList;
 
 /**
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 
 public class CalculateDailyData {
 
-    public Double maxTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+    public Double maxTemp(ArrayList<WeatherDataArrayKeysModel> arrayData) {
         double max = arrayData.get(0).getTempreture();
         for (int counter = 1; counter < arrayData.size(); counter++)
 
@@ -21,7 +23,7 @@ public class CalculateDailyData {
     }
 
 
-    public Double minTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+    public Double minTemp(ArrayList<WeatherDataArrayKeysModel> arrayData) {
         double min = arrayData.get(0).getTempreture();
         for (int counter = 1; counter < arrayData.size(); counter++)
 
@@ -34,7 +36,7 @@ public class CalculateDailyData {
     }
 
 
-    public Integer meanTemp(ArrayList<WeatherDataArrayKeys> arrayData) {
+    public Integer meanTemp(ArrayList<WeatherDataArrayKeysModel> arrayData) {
         Double TampretureAtPosition = 0.0;
         for (int i = 0; i < arrayData.size(); i++) {
 

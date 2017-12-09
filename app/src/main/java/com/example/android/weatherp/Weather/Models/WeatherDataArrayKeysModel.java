@@ -1,4 +1,4 @@
-package com.example.android.weatherp;
+package com.example.android.weatherp.Weather.Models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Jindal on 11/29/2017.
  */
 
-public class WeatherDataArrayKeys {
+public class WeatherDataArrayKeysModel {
     @SerializedName("sunriseTime")
     private long SunriseTime;
     @SerializedName("sunsetTime")
