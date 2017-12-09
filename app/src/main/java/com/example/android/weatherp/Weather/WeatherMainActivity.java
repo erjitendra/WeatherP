@@ -9,6 +9,12 @@ import android.widget.TextView;
 import com.example.android.weatherp.R;
 import com.example.android.weatherp.Weather.Models.WeatherApiResponseModel;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class WeatherMainActivity extends AppCompatActivity {
 
     public TextView time, summary, humidity, avgTempreature, address;
@@ -19,6 +25,9 @@ public class WeatherMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Log.v("WeatherApp", "Extracting input data");
 
         Bundle b = getIntent().getExtras();
         String DynamicLatitude = b.getString("latitude");
@@ -34,18 +43,44 @@ public class WeatherMainActivity extends AppCompatActivity {
         progressDialog.show();
 
         // Fetch
-        FetchWeatherData fetcher = new FetchWeatherData();
-        WeatherApiResponseModel data = fetcher.fetch(DynamicLatitude, DynamicLongitude, DynamicTimeStamp);
+        Log.v("WeatherApp", "Getting full URL");
+        FetchHelperWeatherData fetcherHelper = new FetchHelperWeatherData();
+        String ApiDynamicUrl = fetcherHelper.constructUrl(DynamicLatitude, DynamicLongitude, DynamicTimeStamp);
 
-        // Parse
-        ParseWeatherData parser = new ParseWeatherData(data);
-        ParsedOutput parsedOutput = parser.parse();
+        Log.v("WeatherApp", "Fetching using Retrofit");
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(WeatherConstants.WEATHER_API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
 
-        progressDialog.dismiss();
+        Retrofit retrofit = builder.build();
 
+        WeatherClient client = retrofit.create(WeatherClient.class);
+        Call<WeatherApiResponseModel> call = client.fetchProducts(ApiDynamicUrl);
+        call.enqueue(new Callback<WeatherApiResponseModel>() {
+            @Override
+            public void onResponse(Call<WeatherApiResponseModel> call, Response<WeatherApiResponseModel> response) {
 
-        Log.v("Done", "" + data);
-        setOutputInUI(DynamicAddress, parsedOutput);
+                WeatherApiResponseModel data = response.body();
+                Log.v("WeatherApp", "Response: " + data);
+
+                // Parse
+                Log.v("WeatherApp", "Parsing");
+                ParseWeatherData parser = new ParseWeatherData(data);
+                ParsedOutput parsedOutput = parser.parse();
+
+                progressDialog.dismiss();
+
+                Log.v("WeatherApp", "Setting in UI");
+                setOutputInUI(DynamicAddress, parsedOutput);
+
+            }
+
+            @Override
+            public void onFailure(Call<WeatherApiResponseModel> call, Throwable t) {
+//                Toast.makeText(getBaseContext(), "Sorry, Product listing failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
     }

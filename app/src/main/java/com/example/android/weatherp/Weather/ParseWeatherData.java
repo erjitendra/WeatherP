@@ -1,5 +1,7 @@
 package com.example.android.weatherp.Weather;
 
+import android.util.Log;
+
 import com.example.android.weatherp.Weather.Models.WeatherApiResponseModel;
 
 import java.text.SimpleDateFormat;
@@ -15,22 +17,27 @@ public class ParseWeatherData {
     CalculateDailyData calculator = new CalculateDailyData();
 
     public ParseWeatherData(WeatherApiResponseModel fetchedData) {
-        fetchedData = fetchedData;
+        this.fetchedData = fetchedData;
     }
 
     public ParsedOutput parse() {
 
         ParsedOutput output = new ParsedOutput();
 
+        Log.v("WeatherApp", "Working on summary and humisity");
         output.setSummary(summary());
         output.setHumidity(humidity());
 
+        Log.v("WeatherApp", "Working on temps");
         output.setTemperatureMean(getTempMean());
         output.setTemperatureMin(getTempMin());
         output.setTemperatureMax(getTempMax());
 
+        Log.v("WeatherApp", "Working on sunrise and sunset");
         output.setSunriseTime(getSunrise());
         output.setSunsetTime(getSunset());
+
+        Log.v("WeatherApp", "working on selected date");
         output.setSelectedDate(getselectedDate());
 
         return output;
