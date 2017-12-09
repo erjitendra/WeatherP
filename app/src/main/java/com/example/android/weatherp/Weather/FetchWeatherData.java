@@ -2,11 +2,7 @@ package com.example.android.weatherp.Weather;
 
 import android.util.Log;
 
-import com.example.android.weatherp.R;
 import com.example.android.weatherp.Weather.Models.WeatherApiResponseModel;
-import com.example.android.weatherp.WeatherClient;
-
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +19,9 @@ public class FetchWeatherData {
     public static String BASE_URL = "https://api.darksky.net/forecast/";
     WeatherApiResponseModel data = new WeatherApiResponseModel();
 
-    public void fetch(String latitude, String longitude, String timestamp) {
+    public WeatherApiResponseModel fetch(String latitude, String longitude, String timestamp) {
         String ApiDynamicUrl = constructUrl(latitude, longitude, timestamp);
-        callApi(ApiDynamicUrl);
+        return callApi(ApiDynamicUrl);
 
     }
 
@@ -55,6 +51,7 @@ public class FetchWeatherData {
 
             @Override
             public void onFailure(Call<WeatherApiResponseModel> call, Throwable t) {
+//                Toast.makeText(getBaseContext(), "Sorry, Product listing failed", Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -1,4 +1,4 @@
-package com.example.android.weatherp;
+package com.example.android.weatherp.Weather;
 
 import com.example.android.weatherp.Weather.Models.WeatherDataArrayKeysModel;
 
@@ -36,15 +36,13 @@ public class CalculateDailyData {
     }
 
 
-    public Integer meanTemp(ArrayList<WeatherDataArrayKeysModel> arrayData) {
+    public Double meanTemp(ArrayList<WeatherDataArrayKeysModel> arrayData) {
         Double TampretureAtPosition = 0.0;
         for (int i = 0; i < arrayData.size(); i++) {
 
             TampretureAtPosition += arrayData.get(i).getTempreture();
         }
         Double TempreatureMean = TampretureAtPosition / (arrayData.size() - 1);
-        Double d = TempreatureMean;
-        Integer tempmeanInt = d.intValue();
-        return tempmeanInt;
+        return TempreatureMean;
     }
 }

@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.weatherp.Weather.GenericUtils;
 import com.example.android.weatherp.Weather.WeatherMainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,9 +40,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -64,18 +62,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentLocationMarker;
     private DatePicker datePicker;
     private Calendar calendar;
+
     private TextView dateView;
     private int year, month, day;
+    private long selectedTimeStamp;
+
+
     private DatePickerDialog.OnDateSetListener myDateListener = new
             DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker arg0,
                                       int arg1, int arg2, int arg3) {
-                    // TODO Auto-generated method stub
-                    // arg1 = year
-                    // arg2 = month
-                    // arg3 = day
-                    showDate(arg1, arg2 + 1, arg3);
+                    year = arg1;
+                    month = arg2 + 1;
+                    day = arg3;
+                    setDateView();
+                    selectedTimeStamp = DateUtils.getDateObj(year, month, day).getTime() / 1000;
                 }
             };
 
@@ -84,23 +86,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        desiredPlace = findViewById(R.id.desiredPlace);
-
+        // Setting up default date
         dateView = (TextView) findViewById(R.id.tvDate);
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
+        setCurrentDateVariables();
+        setDateView();
+        selectedTimeStamp = DateUtils.getDateObj(year, month, day).getTime() / 1000;
 
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month + 1, day);
-
-
-
-
-
-
+        // Map activities
+        desiredPlace = findViewById(R.id.desiredPlace);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CheckLocationPermission();
+            GenericUtils.CheckLocationPermission(this);
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -108,11 +103,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-    }
-
-    @SuppressWarnings("deprecation")
-    public void setDate(View view) {
-        showDialog(999);
     }
 
     @Override
@@ -124,37 +114,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
-    private void showDate(int year, int month, int day) {
-        dateView.setText(new StringBuilder().append(day).append("/")
-                .append(month).append("/").append(year));
+    @SuppressWarnings("deprecation")
+    public void setDate(View view) {
+        showDialog(999);
+    }
 
-        setTimestamp(year, month, day);
-
+    private void setCurrentDateVariables() {
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
     }
 
-    private void setTimestamp(int year, int month, int day) {
-        String str_date = String.valueOf(new StringBuilder().append(day).append("/")
-                .append(month).append("/").append(year));
-        Log.v("Date17", "" + str_date);
-        DateFormat formatter;
-
-        formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-
-        try {
-            date = (Date) formatter.parse(str_date);
-            Log.v("Date13", "" + date.getTime());
-
-            //timestamp.setText(String.valueOf(date.getTime() / 1000));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    private void setDateView() {
+        dateView.setText(DateUtils.getDate(year, month, day));
     }
-
-
-
-
 
 
     @Override
@@ -185,7 +160,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             buildGoogleApiClient();
         }
-
 
     }
 
@@ -250,21 +224,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-
-
-
-
-        Button searchButton=findViewById(R.id.searchPlaceMap);
+        Button searchButton = findViewById(R.id.searchPlaceMap);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String desiredLocation = desiredPlace.getText().toString();
                 List<Address> addressList;
-                Log.v("jeet",""+desiredLatLng);
+                Log.v("jeet", "" + desiredLatLng);
 
-                if(!desiredPlace.equals(""))
-                {
+                if (!desiredPlace.equals("")) {
                     mMap.clear();
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
@@ -272,21 +241,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.v("WrongAdd", "" + addressList);
 
 
-                        if (addressList.size() > 0)
-                        {
+                        if (addressList.size() > 0) {
 
                             desiredLatLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
-                                MarkerOptions markerOptions = new MarkerOptions();
-                                markerOptions.position(desiredLatLng);
-                                markerOptions.title(desiredLocation);
-                                mMap.addMarker(markerOptions);
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(desiredLatLng));
-                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
-                                StringBuilder sb = new StringBuilder();
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(desiredLatLng);
+                            markerOptions.title(desiredLocation);
+                            mMap.addMarker(markerOptions);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(desiredLatLng));
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+                            StringBuilder sb = new StringBuilder();
                             desiredAddress = addressList.get(0);
                             for (int j = 0; j < desiredAddress.getMaxAddressLineIndex(); j++) {
                                 sb.append(desiredAddress.getAddressLine(j)).append("\n");
-                                }
+                            }
                             sb.append(desiredAddress.getLocality()).append("\n");//village
                             sb.append(desiredAddress.getAdminArea()).append("\n"); //state
 
@@ -296,10 +264,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // sb.append(desiredAddress.getSubAdminArea()).append("\n");//district
 
 
-                                 addressResult = sb.toString();
-
-
-
+                            addressResult = sb.toString();
 
 
                         } else {
@@ -317,27 +282,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
-        Button getWeather=findViewById(R.id.getWeather);
+        Button getWeather = findViewById(R.id.getWeather);
         getWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), WeatherMainActivity.class);
-                Bundle b=new Bundle();
-                b.putString("latitude",String.valueOf(desiredAddress.getLatitude()));
-                b.putString("longitude",String.valueOf(desiredAddress.getLongitude()));
-                b.putString("address",addressResult);
-                b.putString("timestamp", String.valueOf(date.getTime() / 1000));
+                Bundle b = new Bundle();
+                b.putString("latitude", String.valueOf(desiredAddress.getLatitude()));
+                b.putString("longitude", String.valueOf(desiredAddress.getLongitude()));
+                b.putString("address", addressResult);
+                b.putString("timestamp", String.valueOf(selectedTimeStamp));
+
+                Log.v("WeatherApp TimeStamp", "" + selectedTimeStamp);
+                Log.v("WeatherApp lat", "" + desiredAddress.getLatitude());
+                Log.v("WeatherApp long", "" + desiredAddress.getLongitude());
+                Log.v("WeatherApp address", "" + addressResult);
+
                 intent.putExtras(b);
                 startActivity(intent);
             }
         });
 
 
-
     }
-
-
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -349,22 +316,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationServices.FusedLocationApi.requestLocationUpdates(client, locationRequest, this);
         }
     }
-
-    public boolean CheckLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-
-        {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_Location_code);
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_Location_code);
-            }
-            return false;
-        } else
-            return true;
-    }
-
 
     @Override
     public void onConnectionSuspended(int i) {

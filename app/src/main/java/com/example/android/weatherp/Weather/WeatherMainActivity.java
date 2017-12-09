@@ -5,150 +5,73 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.android.weatherp.CalculateDailyData;
 import com.example.android.weatherp.R;
 import com.example.android.weatherp.Weather.Models.WeatherApiResponseModel;
-import com.example.android.weatherp.WeatherClient;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherMainActivity extends AppCompatActivity {
 
-    public static String BASE_URL = "https://api.darksky.net/forecast/";
-    public TextView time, summary, tempreature, humidity, avgTempreature, address;
+    public TextView time, summary, humidity, avgTempreature, address;
     public TextView sunriseTime, sunsetTime, maxTempreature, minTempreature;
-    WeatherApiResponseModel products = new WeatherApiResponseModel();
-    Date dateObject, SunriseTimeStamp, SunsetTimeStamp;
-    CalculateDailyData calculateDailyData=new CalculateDailyData();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Dynamic Url
         Bundle b = getIntent().getExtras();
         String DynamicLatitude = b.getString("latitude");
         String DynamicLongitude = b.getString("longitude");
         String DynamicTimeStamp = b.getString("timestamp");
         final String DynamicAddress = b.getString("address");
 
-        final String DynamicUrl = "fcc784e094a6fa1ab4d7d1a0c39b84c5/" + DynamicLatitude + "," + DynamicLongitude + "," + DynamicTimeStamp + "?units=si";
-        Log.v("Done", "" + BASE_URL + DynamicUrl);
-
 
         //Progress Dialogue
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading WeatherDataArrayKeysModel....");
-
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
+        // Fetch
+        FetchWeatherData fetcher = new FetchWeatherData();
+        WeatherApiResponseModel data = fetcher.fetch(DynamicLatitude, DynamicLongitude, DynamicTimeStamp);
+
+        // Parse
+        ParseWeatherData parser = new ParseWeatherData(data);
+        ParsedOutput parsedOutput = parser.parse();
+
+        progressDialog.dismiss();
 
 
+        Log.v("Done", "" + data);
+        setOutputInUI(DynamicAddress, parsedOutput);
 
-        //Retrofit  Api Call
-
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create());
-
-        Retrofit retrofit = builder.build();
-
-        WeatherClient client = retrofit.create(WeatherClient.class);
-        Call<WeatherApiResponseModel> call = client.fetchProducts(DynamicUrl);
-
-        call.enqueue(new Callback<WeatherApiResponseModel>() {
-            @Override
-            public void onResponse(Call<WeatherApiResponseModel> call, retrofit2.Response<WeatherApiResponseModel> response) {
-                progressDialog.dismiss();
-                 products = response.body();
-                Log.v("Done", "" + products);
-
-                time = findViewById(R.id.currentTime);
-                summary = findViewById(R.id.Summary);
-
-
-                humidity = findViewById(R.id.Humidity);
-                avgTempreature = findViewById(R.id.AvgTempreature);
-                sunriseTime = findViewById(R.id.SunriseTime);
-                sunsetTime = findViewById(R.id.SunsetTime);
-                maxTempreature = findViewById(R.id.MaxTempreature);
-                minTempreature = findViewById(R.id.MinTempreature);
-                address = findViewById(R.id.address);
-
-
-                // For Change Time in current Date time form TimeStamp
-
-                dateObject = new Date(products.getCurrently().getTime() * 1000);
-                String formattedDate = formatDate(dateObject);
-                String formattedTime = formatTime(dateObject);
-                time.setText(formattedDate);
-                Log.v("Done", "Date" + formattedDate);
-
-
-
-
-                Integer tempmeanInt = calculateDailyData.meanTemp(products.getHourly().getData());
-                Double tempMax = calculateDailyData.maxTemp(products.getHourly().getData());
-                Double tempMin = calculateDailyData.minTemp(products.getHourly().getData());
-//                Log.v("Done",""+tempMax+"/"+tempMin+"/"+tempmeanInt);
-//                Log.v("Done","Summary"+products.getCurrently().getSummary());
-//                Log.v("Done","Temp"+Double.toString(products.getCurrently().getTemperature()));
-//
-//                Log.v("Done","Address"+DynamicAddress);
-//                Log.v("Done","Sunrise Ts"+products.getDaily().getData().get(0).getSunriseTime() * 1000);
-
-
-                summary.setText(products.getDaily().getData().get(0).getSummary());
-
-                // Log.v("Done","Humidity"+Double.toString(products.getCurrently().getHumidity()));
-                humidity.setText(Double.toString(products.getDaily().getData().get(0).getHumidity() * 100));
-                avgTempreature.setText(Integer.toString(tempmeanInt));
-                maxTempreature.setText(Double.toString(tempMax));
-                minTempreature.setText(Double.toString(tempMin));
-                address.setText(DynamicAddress);
-                //...........................................
-                SunriseTimeStamp = new Date(products.getDaily().getData().get(0).getSunriseTime() * 1000);
-                Log.v("ABCD", "" + SunriseTimeStamp);
-                SunsetTimeStamp = new Date(products.getDaily().getData().get(0).getSunsetTime() * 1000);
-                String formattedSunriseTime = formatTime(SunriseTimeStamp);
-                String formattedSunsetTime = formatTime(SunsetTimeStamp);
-                sunriseTime.setText(formattedSunriseTime);
-                sunsetTime.setText(formattedSunsetTime);
-                Log.v("Found", "SR" + formattedSunriseTime);
-
-                //...............................................
-
-
-            }
-
-            @Override
-            public void onFailure(Call<WeatherApiResponseModel> call, Throwable t) {
-
-                Toast.makeText(getBaseContext(), "Sorry, Product listing failed", Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
     }
 
-    private String formatDate(Date timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
-        return dateFormat.format(timestamp);
-    }
+    private void setOutputInUI(String dynamicAddress, ParsedOutput parsedOutput) {
+        // Get views by ids
+        time = findViewById(R.id.currentTime);
+        summary = findViewById(R.id.Summary);
 
-    private String formatTime(Date timestamp) {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-        return timeFormat.format(timestamp);
-    }
+        humidity = findViewById(R.id.Humidity);
+        avgTempreature = findViewById(R.id.AvgTempreature);
+        sunriseTime = findViewById(R.id.SunriseTime);
+        sunsetTime = findViewById(R.id.SunsetTime);
+        maxTempreature = findViewById(R.id.MaxTempreature);
+        minTempreature = findViewById(R.id.MinTempreature);
+        address = findViewById(R.id.address);
 
+        // set Vales for views
+        time.setText(parsedOutput.getSelectedDate());
+        summary.setText(parsedOutput.getSummary());
+        humidity.setText(String.valueOf(parsedOutput.getHumidity()));
+        avgTempreature.setText(String.valueOf(parsedOutput.getTemperatureMean()));
+        maxTempreature.setText(String.valueOf(parsedOutput.getTemperatureMax()));
+        minTempreature.setText(String.valueOf(parsedOutput.getTemperatureMin()));
+        address.setText(dynamicAddress);
+        sunriseTime.setText(parsedOutput.getSunriseTime());
+        sunsetTime.setText(parsedOutput.getSunsetTime());
+    }
 }

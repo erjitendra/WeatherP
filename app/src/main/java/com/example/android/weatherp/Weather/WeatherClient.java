@@ -1,4 +1,4 @@
-package com.example.android.weatherp;
+package com.example.android.weatherp.Weather;
 
 
 import com.example.android.weatherp.Weather.Models.WeatherApiResponseModel;
